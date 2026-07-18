@@ -121,14 +121,14 @@ def period(backend, a: int, N: int,
         return -1
 
 
-def shors_breaker(backend, N, max_attempts=50):
+def shors_breaker(backend, N, max_attempts=10):
     '''
     QPE-based Shor factoring.
 
     Args:
         backend:      Qiskit backend
         N:            Modulus to factor
-        max_attempts: Maximum random-base attempts (default 20, can be increased for larger N to improve success probability)
+        max_attempts: Maximum random-base attempts (default 10, can be increased for larger N to improve success probability)
 
     Returns:
         (p, q): Prime factors of N, or (-1, -1) on failure
