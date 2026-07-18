@@ -121,7 +121,7 @@ def period(backend, a: int, N: int,
         return -1
 
 
-def shors_breaker(backend, N, max_attempts=20):
+def shors_breaker(backend, N, max_attempts=50):
     '''
     QPE-based Shor factoring.
 
