@@ -3,5 +3,5 @@ numpy>=1.24.3
 lorem_text>=2.0.1
 
 # Quantum computing libraries
-qiskit>=0.43.2
-qiskit-aer>=0.13.4
+qiskit>=2.1.2
+qiskit-aer>=0.17.1
