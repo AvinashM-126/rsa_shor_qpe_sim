@@ -121,14 +121,14 @@ def period(backend, a: int, N: int,
         return -1
 
 
-def shors_breaker(backend, N, max_attempts=15):
+def shors_breaker(backend, N, max_attempts=20):
     '''
     QPE-based Shor factoring.
 
     Args:
         backend:      Qiskit backend
         N:            Modulus to factor
-        max_attempts: Maximum random-base attempts
+        max_attempts: Maximum random-base attempts (default 20, can be increased for larger N to improve success probability)
 
     Returns:
         (p, q): Prime factors of N, or (-1, -1) on failure
@@ -138,7 +138,7 @@ def shors_breaker(backend, N, max_attempts=15):
     if N % 2 == 0:
         return 2, N // 2
 
-    for _ in range(max_attempts):
+    for attempt in range(max_attempts):
         a = randint(2, N - 1)
         _, g = gcd_extEucideanAlgorithm(a, N)
 
@@ -187,7 +187,7 @@ def shor_algorithm(pk):
     modulus_bits = N.bit_length()
     if modulus_bits > WORK_QUBITS:
         print(
-            f'\n⚠  QPE cannot factor this modulus: {modulus_bits} bits required, '
+            f'\nQPE cannot factor this modulus: {modulus_bits} bits required, '
             f'work register supports only {WORK_QUBITS} bits.\n'
             f'   Reduce input_bits so that N < 2^{WORK_QUBITS} = {2**WORK_QUBITS}.'
         )
@@ -209,7 +209,7 @@ def shor_algorithm(pk):
     p_shor, q_shor = shors_breaker(backend, N, max_attempts=10)
 
     if p_shor <= 0 or q_shor <= 0:
-        print('\n⚠  Factorization failed after all attempts.')
+        print('\nFactorization failed after all attempts.')
         return [e, N]
 
     print('\n[Private Key Recovery]')
@@ -219,7 +219,7 @@ def shor_algorithm(pk):
     d_shor = moduloInverse_ExtEuclideanAlgorithm(e, phi_n)
     sk_shor = [d_shor, N]
 
-    print(f'  ✓ d = {hex(d_shor)}')
+    print(f'd = {hex(d_shor)}')
     print('\n' + '=' * 70)
     printRSA_params(p_shor, q_shor, N, phi_n, pk, sk_shor)
     print('=' * 70)
